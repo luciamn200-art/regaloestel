@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi mejor amiga</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fff9e6; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        #inicio { text-align: center; cursor: pointer; }
+        .flor-gigante { font-size: 100px; display: block; animation: beat 2s infinite; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        #ventana-pc { display: none; width: 90%; max-width: 650px; height: 550px; background: #f0f0f0; border: 2px solid #999; border-radius: 10px; flex-direction: column; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .barra-superior { background: #ddd; padding: 10px; display: flex; border-bottom: 1px solid #999; border-radius: 8px 8px 0 0; }
+        .botones { display: flex; gap: 6px; }
+        .btn-circular { width: 12px; height: 12px; border-radius: 50%; }
+        
+        .contenido { padding: 20px; overflow-y: auto; flex-grow: 1; text-align: center; position: relative; }
+        .grid-carpetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 50px; }
+        .carpeta { cursor: pointer; }
+        .carpeta span { font-size: 50px; display: block; }
+        
+        .seccion { display: none; }
+        .btn-atras { background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold; }
+        .foto-amigas { max-width: 100%; border-radius: 10px; }
+        .texto-carta { text-align: left; background: white; padding: 20px; border-radius: 8px; margin-top: 15px; line-height: 1.6; border-left: 5px solid #f1c40f; }
+        
+        #pantalla-fin { height: 100%; background: linear-gradient(to bottom, #1a2a6c, #b21f1f, #fdbb2d); border-radius: 5px; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .estrella { position: absolute; top: -20px; animation: lluvia linear forwards; }
+        @keyframes lluvia { to { transform: translateY(600px); opacity: 0; } }
+    </style>
+</head>
+<body>
+    <audio id="audio" src="musica.mp3" loop></audio>
+
+    <div id="inicio" onclick="empezar()">
+        <span class="flor-gigante">🌻</span>
+        <h1 style="color: #e67e22;">Pulsa la flor, estrelleta</h1>
+    </div>
+
+    <div id="ventana-pc">
+        <div class="barra-superior">
+            <div class="botones">
+                <div class="btn-circular" style="background: #ff5f56;"></div>
+                <div class="btn-circular" style="background: #ffbd2e;"></div>
+                <div class="btn-circular" style="background: #27c93f;"></div>
+            </div>
+        </div>
+        <div class="contenido">
+            <div id="menu" class="grid-carpetas">
+                <div class="carpeta" onclick="abrir('nosotras')"><span>📂</span><b>Nosotras</b></div>
+                <div class="carpeta" onclick="abrir('felices-18')"><span>📂</span><b>Felices 18</b></div>
+                <div class="carpeta" onclick="abrir('fin')"><span>📂</span><b>Fin</b></div>
+            </div>
+
+            <div id="nosotras" class="seccion">
+                <button class="btn-atras" onclick="volver()">← Volver</button>
+                <img src="foto.jpg" class="foto-amigas">
+                <div class="texto-carta">
+                    Te conocí el 6 de septiembre de 2022, cuando te vi jamás imaginé que conectaría tan bien con alguien, no sabía que serías mi mitad en amistad, el 30 de julio de 2024 supe lo que es perderte y lo mas importante, supe que no quería perderte nunca más, que podría encontrar a muchas amigas pero tu, tu seras mi dama de honor principal, seguirás siendo mi mejor amiga cuando tengamos 80 años y vayamos a tomar un cacaolat mientras celebramos otro año juntas.
+                </div>
+            </div>
+
+            <div id="felices-18" class="seccion">
+                <button class="btn-atras" onclick="volver()">← Volver</button>
+                <div style="font-size: 60px;">🌻🌼🌷</div>
+                <h1 style="color: #c0392b;">Feliços 18, t'estimo estrelleta</h1>
+            </div>
+
+            <div id="fin" class="seccion" style="height: 100%;">
+                <div id="pantalla-fin">
+                    <button class="btn-atras" onclick="volver()" style="position: absolute; top: 10px; left: 10px;">← Volver</button>
+                    <h1 style="font-size: 50px;">t'estimoooo</h1>
+                    <div id="estrellas"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function empezar() {
+            document.getElementById('audio').play();
+            document.getElementById('inicio').style.display = 'none';
+            document.getElementById('ventana-pc').style.display = 'flex';
+        }
+        function abrir(id) {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById(id).style.display = 'block';
+            if(id === 'fin') soltarEstrellas();
+        }
+        function volver() {
+            document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
+            document.getElementById('menu').style.display = 'grid';
+        }
+        function soltarEstrellas() {
+            const cont = document.getElementById('estrellas');
+            cont.innerHTML = '';
+            for(let i=0; i<40; i++) {
+                let e = document.createElement('div');
+                e.className = 'estrella'; e.innerText = '⭐';
+                e.style.left = Math.random() * 100 + '%';
+                e.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                cont.appendChild(e);
+            }
+        }
+    </script>
+</body>
+</html>
